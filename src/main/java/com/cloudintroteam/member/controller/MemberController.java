@@ -4,6 +4,7 @@ import com.cloudintroteam.member.dto.request.SaveMemberRequest;
 import com.cloudintroteam.member.dto.response.GetMemberResponse;
 import com.cloudintroteam.member.dto.response.SaveMemberResponse;
 import com.cloudintroteam.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class MemberController {
 
     // 팀원 저장
     @PostMapping("/api/members")
-    public ResponseEntity<SaveMemberResponse> saveMember(@RequestBody SaveMemberRequest request) {
+    public ResponseEntity<SaveMemberResponse> saveMember(@Valid @RequestBody SaveMemberRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.save(request));
     }
 
