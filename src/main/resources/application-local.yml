@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/cloud-intro-team
+    username: admin
+    password: 46574657
+  jpa:
+    hibernate:
+      ddl-auto: create
