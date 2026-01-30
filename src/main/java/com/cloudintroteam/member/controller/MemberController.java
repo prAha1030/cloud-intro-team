@@ -1,6 +1,7 @@
 package com.cloudintroteam.member.controller;
 
 import com.cloudintroteam.member.dto.request.SaveMemberRequest;
+import com.cloudintroteam.member.dto.response.FileDownloadResponse;
 import com.cloudintroteam.member.dto.response.GetMemberResponse;
 import com.cloudintroteam.member.dto.response.SaveMemberResponse;
 import com.cloudintroteam.member.service.MemberService;
@@ -40,5 +41,12 @@ public class MemberController {
         log.info("[API - LOG] 팀원 프로필 사진 저장 및 업로드 요청");
         memberService.upload(memberId, file);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    // 팀원 프로필 사진 조회 및 다운로드
+    @GetMapping("/api/members/{memberId}/profile-image")
+    public ResponseEntity<FileDownloadResponse> fileDownload(@PathVariable Long memberId) {
+        log.info("[API - LOG] 팀원 프로필 사진 조회 및 다운로드 요청");
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.download(memberId));
     }
 }

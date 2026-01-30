@@ -1,6 +1,7 @@
 package com.cloudintroteam.member.service;
 
 import com.cloudintroteam.member.dto.request.SaveMemberRequest;
+import com.cloudintroteam.member.dto.response.FileDownloadResponse;
 import com.cloudintroteam.member.dto.response.GetMemberResponse;
 import com.cloudintroteam.member.dto.response.SaveMemberResponse;
 import com.cloudintroteam.member.entity.Member;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -76,5 +79,17 @@ public class MemberService {
 
         // 프로필 사진 저장
         member.saveProfileImage(key);
+    }
+
+    // 팀원 프로필 사진 조회 및 다운로드
+    @Transactional(readOnly = true)
+    public FileDownloadResponse download(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberNotFoundException("존재하지 않는 팀원입니다."));
+
+        // 유효기간 7일의 다운로드 가능한 url 생성
+        URL url = s3Template.createSignedGetURL(bucket, member.getImageKey(), Duration.ofDays(7));
+
+        return new FileDownloadResponse(url.toString());
     }
 }
