@@ -37,12 +37,6 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build --no-daemon
-        env:
-          SPRING_DATASOURCE_URL: "jdbc:h2:mem:cloud-intro-team;MODE=MySQL"
-          SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.h2.Driver"
-          SPRING_JPA_DATABASE_PLATFORM: "org.hibernate.dialect.H2Dialect"
-          SPRING_JPA_HIBERNATE_DDL_AUTO: "create"
-          SPRING_FLYWAY_ENABLED: "false"
 
       - name: Set up QEMU
         if: github.event_name != 'pull_request'
@@ -106,7 +100,7 @@ jobs:
               "docker pull \"$DOCKERHUB_USERNAME/cloud-intro-team-app:$IMAGE_TAG\"",
               "docker stop cloud-intro-team-app || true",
               "docker rm cloud-intro-team-app || true",
-              "docker run -d --name cloud-intro-team-app -p 8080:8080 -e \"SPRING_DATASOURCE_URL=jdbc:h2:mem:cloud-intro-team;MODE=MySQL\" -e \"SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver\" -e \"SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect\" -e \"SPRING_JPA_HIBERNATE_DDL_AUTO=create\" -e \"SPRING_FLYWAY_ENABLED=false\" --restart always \"$DOCKERHUB_USERNAME/cloud-intro-team-app:$IMAGE_TAG\"",
+              "docker run -d --name cloud-intro-team-app -p 8080:8080 -e \"SPRING_PROFILES_ACTIVE=prod\" -e \"AWS_REGION=ap-northeast-2\" --restart always \"$DOCKERHUB_USERNAME/cloud-intro-team-app:$IMAGE_TAG\"",
               "docker ps | grep cloud-intro-team-app",
               "docker logs --tail 50 cloud-intro-team-app || true"
             ]
