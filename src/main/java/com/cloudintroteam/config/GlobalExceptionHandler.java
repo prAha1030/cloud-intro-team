@@ -39,14 +39,6 @@ public class GlobalExceptionHandler {
         return getErrorResponse(status, ex.getMessage());
     }
 
-    // 예상치 못한 나머지 예외
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleUnexpectedException(Exception ex) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        log.error("예상치 못한 에러 발생");
-        return getErrorResponse(status, "서버 내부 오류가 발생했습니다.");
-    }
-
     // 공통 에러 응답
     public ResponseEntity<Map<String, Object>> getErrorResponse(HttpStatus status, String message) {
         Map<String, Object> errorResponse = new HashMap<>();
