@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: cloud-intro-team
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-2
+      s3:
+        bucket: cloud-intro-team-praha1030-files
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
